@@ -1,0 +1,179 @@
+<script>
+    window.onload = function () {
+        var ex1el = document.querySelector('.example-1');
+
+
+        var selectedPartner = ["r", "a", "j", "t", "o", "h"].reverse().join('');
+
+        function getPartner() {
+            return selectedPartner;
+        };
+
+
+        document.querySelector('#partner-2-closer').onclick = function () {
+            document.querySelector('#partner-2').classList.remove('active');
+            ga('send', 'event', 'affiliate', 'close-dialog');
+        };
+
+        var heatmap1 = h337.create({
+            container: ex1el
+        });
+
+        var refreshHeatmap1 = function () {
+            var data1 = {};
+            var datap1 = [];
+            var max1 = 0;
+            var w = 320;
+            var h = 270;
+            var l = 50;
+            while (l--) {
+                var val = Math.random() * 10;
+                max1 = Math.max(max1, val);
+                var d = {
+                    x: Math.floor(Math.random() * w),
+                    y: Math.floor(Math.random() * h),
+                    value: val
+                };
+                datap1.push(d);
+            }
+            data1["max"] = max1;
+            data1["data"] = datap1;
+
+            heatmap1.setData(data1);
+        };
+        refreshHeatmap1();
+
+        ex1el.onclick = function () {
+            refreshHeatmap1();
+        };
+
+        window.requestAnimationFrame = (function () {
+            return window.requestAnimationFrame ||
+                window.webkitRequestAnimationFrame ||
+                window.mozRequestAnimationFrame ||
+                function (callback) {
+                    window.setTimeout(callback, 1000 / 60);
+                };
+        })();
+
+
+        var body = document.body;
+        var bodyStyle = getComputedStyle(body);
+        var hmEl = document.querySelector('.heatmap-wrapper');
+
+        hmEl.style.width = bodyStyle.width;
+        hmEl.style.height = '1500px';
+
+        var hm = document.querySelector('.heatmap');
+
+        var heatmap = h337.create({
+            container: hm,
+            radius: 60
+        });
+
+
+        var trackData = false;
+
+        setInterval(function () {
+            trackData = true;
+        }, 50);
+
+        var idleTimeout, idleInterval;
+
+        var lastX, lastY;
+        var idleCount;
+
+        function startIdle() {
+            idleCount = 0;
+
+            function idle() {
+                heatmap.addData({
+                    x: lastX,
+                    y: lastY
+                });
+                idleCount++;
+                if (idleCount > 10) {
+                    clearInterval(idleInterval);
+                }
+            };
+            idle();
+            idleInterval = setInterval(idle, 1000);
+        };
+
+
+        body.onmousemove = function (ev) {
+            if (idleTimeout) clearTimeout(idleTimeout);
+            if (idleInterval) clearInterval(idleInterval);
+
+            if (trackData) {
+                lastX = ev.pageX;
+                lastY = ev.pageY;
+                heatmap.addData({
+                    x: lastX,
+                    y: lastY
+                });
+                trackData = false;
+            }
+            idleTimeout = setTimeout(startIdle, 500);
+        };
+
+
+        setTimeout(function () {
+            document.querySelector('.sharer').classList.add('show');
+        }, 8000);
+
+
+        function getPartnerURL() {
+            return ["r", "e", "n", "t", "r", "a", "p", "-", "p", "a", "m", "t", "a", "e", "h", "/", "t", "a", ".", "d", "e", "i", "w", "-", "k", "c", "i", "r", "t", "a", "p", ".", "w", "w", "w", "/", "/", ":", "s", "p", "t", "t", "h"].reverse().join('');
+        }
+
+        document.querySelector('#partner-1').onclick = function () {
+            ga('send', 'event', 'affiliate', 'conversion', 'p1=>' + getPartner());
+            var win = window.open(getPartnerURL(), '_blank');
+            win.focus();
+        };
+
+
+        setTimeout(function () {
+            document.querySelector('#partner-2').classList.add('active');
+        }, 3500);
+
+
+        document.querySelector('#partner-link-3').onclick = function () {
+            ga('send', 'event', 'affiliate', 'conversion', 'p2=>' + getPartner());
+            document.querySelector('#partner-2').classList.remove('active');
+            var win = window.open(getPartnerURL(), '_blank');
+            win.focus();
+        };
+
+
+// scroll milestones
+        document.querySelector('.showcases').onmouseenter = function () {
+            ga('send', 'event', 'behavior', 'scroll', 'showcases');
+            this.onmouseenter = null;
+        };
+        document.querySelector('.testimonials').onmouseenter = function () {
+            ga('send', 'event', 'behavior', 'scroll', 'testimonials');
+            this.onmouseenter = null;
+        };
+        document.querySelector('.hmjsnot').onmouseenter = function () {
+            ga('send', 'event', 'behavior', 'scroll', 'hmjsnot');
+            this.onmouseenter = null;
+        };
+
+        /*var expVariations = [
+		function() {},
+		function() {}
+		];
+		var chosenVar = (Math.random()*expVariations.length) >> 0;
+		expVariations[chosenVar]();
+
+		// ga experiment
+		ga('set', 'expId', 'snwudq1NQbGR6GjlCjXvqw');
+		ga('set', 'expVar', ''+chosenVar);*/
+
+
+        ga('send', 'pageview');
+
+    };
+</script>
